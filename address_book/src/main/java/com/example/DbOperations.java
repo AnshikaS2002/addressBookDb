@@ -52,10 +52,32 @@ public class DbOperations {
         }
     }
 
+    public void updateContact(int contact_id, String newPhoneNum, String newEmail) {
+        try {
+            String query = "UPDATE addressbooktable SET phone_number=?, email=? WHERE contact_id=?";
+            try (Connection connection = getConnection();
+                    PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                preparedStatement.setString(1, newPhoneNum);
+                preparedStatement.setString(2, newEmail);
+                preparedStatement.setInt(3, contact_id);
+                int rowsAffected = preparedStatement.executeUpdate();
+                if (rowsAffected > 0) {
+                    System.out.println("The phone number and/or email for this contact has been updated.");
+                } else {
+                    System.err.println("No records were found with the provided contact id.");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void main(String[] args) {
         DbOperations dbOperations = new DbOperations();
         try {
             Connection connection = dbOperations.getConnection();
+            // retrieveAllEntries(connection);
+            dbOperations.updateContact(4, "8449798400", "new_email@gmail.com");
             retrieveAllEntries(connection);
         } catch (SQLException e) {
             e.printStackTrace();
