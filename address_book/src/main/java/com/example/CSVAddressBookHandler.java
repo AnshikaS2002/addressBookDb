@@ -13,7 +13,7 @@ import java.util.List;
 public class CSVAddressBookHandler {
     private static final String CSV_FILE_PATH = "address_book.csv";
 
-    public static void writeContactsTooCsv(List<AddressBook> contacts) {
+    public static void writeContactsToCsv(List<AddressBook> contacts) {
         try (CSVWriter writer = new CSVWriter(new FileWriter(CSV_FILE_PATH))) {
             for (AddressBook contact : contacts) {
                 String[] record = {
@@ -59,17 +59,17 @@ public class CSVAddressBookHandler {
 
     private static List<AddressBook> createBooksList() {
         List<AddressBook> contactsList = new ArrayList<>();
-        contactsList.add(new AddressBook("John", "Adam", "123 Main St", "City1", "State1",
-                "12345", "5553451234", "john@gmail.com"));
-        contactsList.add(new AddressBook("Jane", "Smith", "456 Oak St", "City2", "State2",
-                "54321", "55523455678", "jane@gmail.com"));
+        contactsList.add(new AddressBook("Anshika", "Semwal", "Subhash Nagar", "Dehradun", "Uttarakhand",
+                "12345", "5553451234", "anshi@gmail.com"));
+        contactsList.add(new AddressBook("Khushi", "Singh", "Metropolis", "Rudrapur", "UP",
+                "54321", "55523455678", "khushi@gmail.com"));
 
         return contactsList;
     }
 
     public static void main(String[] args) {
         List<AddressBook> addressBooks = createBooksList();
-        // CSVAddressBookHandler.writeContactsTooCsv(addressBooks);
+        CSVAddressBookHandler.writeContactsToCsv(addressBooks);
         List<AddressBook> loadedAddressBooks = CSVAddressBookHandler.readContactsFromCsv();
 
         for (AddressBook book : loadedAddressBooks) {
