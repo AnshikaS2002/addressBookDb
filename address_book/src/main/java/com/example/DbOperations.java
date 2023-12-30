@@ -166,6 +166,32 @@ public class DbOperations {
         }
     }
 
+    public int getContactCountByCity(String city) {
+        return getContactCount("city", city);
+    }
+
+    public int getContactCountByState(String state) {
+        return getContactCount("state", state);
+    }
+
+    private int getContactCount(String place, String value) {
+        try {
+            String query = "SELECT COUNT(*) FROM addressbooktable WHERE " + place + "=?";
+            try (Connection connection = getConnection();
+                    PreparedStatement preparedStatement = connection.prepareStatement(query);) {
+                preparedStatement.setString(1, value);
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                    if (resultSet.next()) {
+                        return resultSet.getInt(1);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
     public static void main(String[] args) {
         DbOperations dbOperations = new DbOperations();
         try {
@@ -173,16 +199,19 @@ public class DbOperations {
             // retrieveAllEntries(connection);
             // dbOperations.updateContact(4, "8449798400", "new_email@gmail.com");
             // dbOperations.addDateAddedColumn();
-            Date currentDate = new Date(System.currentTimeMillis());
-            dbOperations.addContact("Suhana", "Verma", "Vasant Vihar", "Delhi", "Delhi", "33455621", "6798453487",
-                    "suhana@gmail.com", "book1", "students", currentDate);
-            dbOperations.addContact("Rohan", "Sharma", "Omaxe", "Mumbai", "Maharashtra", "66455621", "6798235487",
-                    "rohan@gmail.com", "book1", "students", currentDate);
+            // Date currentDate = new Date(System.currentTimeMillis());
+            // dbOperations.addContact("Suhana", "Verma", "Vasant Vihar", "Delhi", "Delhi",
+            // "33455621", "6798453487",
+            // "suhana@gmail.com", "book1", "students", currentDate);
+            // dbOperations.addContact("Rohan", "Sharma", "Omaxe", "Mumbai", "Maharashtra",
+            // "66455621", "6798235487",
+            // "rohan@gmail.com", "book1", "students", currentDate);
 
-            Date startDate = Date.valueOf("2023-01-01");
-            Date endDate = Date.valueOf("2023-12-31");
+            // Date startDate = Date.valueOf("2023-01-01");
+            // Date endDate = Date.valueOf("2023-12-31");
             // dbOperations.retrieveContactsByDateRange(startDate, endDate);
 
+            System.out.println(dbOperations.getContactCount("city", "delhi"));
             retrieveAllEntries(connection);
         } catch (SQLException e) {
             e.printStackTrace();
